@@ -1,3 +1,6 @@
+<div id="profiles-tab"></div>
+<h2 data-i18n="profile.profile"></h2>
+
 <p>
 <table class="profile table table-striped table-bordered">
 	<thead>
