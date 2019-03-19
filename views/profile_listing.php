@@ -50,7 +50,7 @@
             $version = $item['payload_name'];
             $profiles = $item['num_profiles'];
             $profile[$name][$version] = $profiles;
-            $profile[$name][$uuid] = $item['profile_uuid']
+            $profile[$name][$uuid] = $item['profile_uuid'];
             $payloaddata[$name][$version] = $profile_item_obj->json_to_html($item['payload_data']);
             $profilecount[$name] = $profiles;
         }
