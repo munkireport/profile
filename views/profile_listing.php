@@ -17,8 +17,9 @@
 
 		<thead>
 		  <tr>
-			<th data-i18n="profile.profilename" data-colname='machine#computer_name' class="col-md-4"></th>
-			<th data-i18n="profile.payload" data-colname='profile#payload_name' class="col-md-8"></th>
+            <th data-i18n="profile.profilename" data-colname='machine#computer_name' class="col-md-4"></th>
+            <th data-i18n="profile.uuid" data-colname='profile#profile_uuid' class="col-md-4"></th>
+            <th data-i18n="profile.payload" data-colname='profile#payload_name' class="col-md-8"></th>
 			<!--<th data-colname='profile#profile_UUID'>UUID</th>
 			<th data-colname='profile#profile_name'>Profile Name</th>
 			<th data-colname='profile#payload_name'>Payload Name</th>
@@ -31,12 +32,12 @@
 
         <tbody>
         <?php $profile_item_obj = new Profile_model();
-        $sql = "SELECT profile_name, COUNT(DISTINCT serial_number) AS num_profiles, payload_name, GROUP_CONCAT(DISTINCT payload_data) as payload_data
+        $sql = "SELECT profile_name, profile_uuid, COUNT(DISTINCT serial_number) AS num_profiles, payload_name, GROUP_CONCAT(DISTINCT payload_data) as payload_data
 						FROM profile
 						LEFT JOIN machine USING (serial_number)
 						LEFT JOIN reportdata USING (serial_number)
 						".get_machine_group_filter()."
-						GROUP BY profile_name, payload_name";
+						GROUP BY profile_name, payload_name, profile_uuid";
                  
         $items = $profile_item_obj->query($sql);
         $items = json_decode(json_encode($items), true);
@@ -49,6 +50,7 @@
             $version = $item['payload_name'];
             $profiles = $item['num_profiles'];
             $profile[$name][$version] = $profiles;
+            $profile[$name][$uuid] = $item['profile_uuid']
             $payloaddata[$name][$version] = $profile_item_obj->json_to_html($item['payload_data']);
             $profilecount[$name] = $profiles;
         }
@@ -61,7 +63,10 @@
 	  <td>
 		<a href='<?php echo $name_url; ?>'><?php echo $name; ?></a>
 		<span class='badge badge-info pull-right'><?php echo $profilecount[$name]; ?></span>
-	  </td>
+      </td>
+      <td>
+        <?php echo $profile[$name][$uuid] ?>
+      </td>
 	  <td>
 		<?php foreach($value as $version => $count): ?>
 		<?php $vers_url=$name_url . '/' . rawurlencode($version); ?>
