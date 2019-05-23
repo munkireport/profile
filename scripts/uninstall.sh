@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Remove power script
-rm -f "${MUNKIPATH}preflight.d/profile.py"
+# Remove profile script
+rm -f "${MUNKIPATH}postflight.d/profile.py"
 
-# Remove powerinfo.txt file
-rm -f "${MUNKIPATH}preflight.d/cache/profile.txt"
+# Remove profile.txt file
+rm -f "${MUNKIPATH}postflight.d/cache/profile.txt"
