@@ -13,13 +13,11 @@ if [ $? = 0 ]; then
 
 	# Set preference to include this file in the preflight check
 	setreportpref "profile" "${CACHEPATH}profile.txt"
-	
+
 	# Remove preflight script and cache file
 	rm -f "${MUNKIPATH}preflight.d/profile.py"
 	rm -f "${MUNKIPATH}preflight.d/cache/profile.txt"
-	
-	killall cfprefsd
-	
+
 else
 	echo "Failed to download all required components!"
 	rm -f "${MUNKIPATH}postflight.d/profile.py"
