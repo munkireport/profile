@@ -1,10 +1,5 @@
 <?php $this->view('partials/head'); ?>
 
-<?php //Initialize models needed for the table
-  new Profile_model;
-  new Machine_model;
-?>
-
 <div class="container">
 
   <div class="row">
