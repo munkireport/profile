@@ -68,12 +68,16 @@ class Profile_controller extends Module_controller
             }
             
             foreach ($items as $item) {
-                $machine = new Machine_model($item->serial_number);
 
                 // Check if authorized for this serial
-                if (! $machine->id) {
+                // Please fix! This is a very resource intensive!!
+                $machine = Machine_model::where('machine.serial_number', $item->serial_number)
+                    ->filter()    
+                    ->first();
+                if( ! $machine->id){
                     continue;
                 }
+                
 
                 $instance['serial'] = $item->serial_number;
                 $instance['hostname'] = $machine->computer_name;
@@ -82,7 +86,6 @@ class Profile_controller extends Module_controller
                 $data['profile_items'][] = $instance;
             }
         }
-
         $obj = new View();
         $obj->view('profileitem_detail', $data, $this->view_path);
     }
