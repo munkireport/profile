@@ -12,7 +12,7 @@ if [ $? = 0 ]; then
 	chmod a+x "${MUNKIPATH}preflight.d/profile.py"
 
 	# Set preference to include this file in the preflight check
-	setreportpref "profile" "${CACHEPATH}profile.txt"
+	setreportpref "profile" "${CACHEPATH}profile.plist"
 
 else
 	echo "Failed to download all required components!"

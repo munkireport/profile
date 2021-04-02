@@ -1,13 +1,12 @@
 <?php
 /**
- * profile list module class
+ * profile module class
  *
  * @package munkireport
  * @author
  **/
 class Profile_controller extends Module_controller
 {
-    
     /*** Protect methods with auth! ****/
     public function __construct()
     {
@@ -15,6 +14,7 @@ class Profile_controller extends Module_controller
         $this->module_path = dirname(__FILE__) .'/';
         $this->view_path = $this->module_path . 'views/';
     }
+
     /**
      * Default method
      *
@@ -25,68 +25,67 @@ class Profile_controller extends Module_controller
         echo "You've loaded the profile module!";
     }
 
-    public function get_profiles()
+	/**
+     * Retrieve data in JSON for widget
+     *
+     **/
+    public function get_profile_groups()
     {
-    $obj = new View();
+        $sql = "SELECT profile_name, COUNT(DISTINCT serial_number) AS count FROM profile 
+                GROUP BY profile_name
+                ORDER BY COUNT DESC";
 
-    if (! $this->authorized()) {
-        $obj->view('json', array('msg' => array('error' => 'Not authenticated')));
-        return;
-    }
-
-    $profile = new Profile_model;
-    $obj->view('json', array('msg' => $profile->get_profiles()));
-    }
-
-    public function items($name = '', $payload = '')
-    {
-        // Protect this handler
-        if (! $this->authorized()) {
-            redirect('auth/login');
-        }
-
-        $data['profile_items'] = array();
-        $data['name'] = 'No item';
-
-        if ($name) {
-            $name = rawurldecode($name);
-            $profile_item_obj = new Profile_model();
-            $data['profile_name'] = $name;
-            if ($payload) {
-                $payload = rawurldecode($payload);
-                $items = $profile_item_obj->retrieveMany(
-                    'profile_name = ? AND payload_name = ?',
-                    array($name, $payload)
-                );
-                    $data['name'] = $payload;
-            } else {
-                $items = $profile_item_obj->retrieveMany(
-                    'profile_name = ?',
-                    array($name)
-                );
-                    $data['name'] = $name;
-            }
-            
-            foreach ($items as $item) {
-
-                // Check if authorized for this serial
-                // Please fix! This is a very resource intensive!!
-                $machine = Machine_model::where('machine.serial_number', $item->serial_number)
-                    ->filter()    
-                    ->first();
-                if( ! $machine->id){
-                    continue;
-                }
-                
-
-                $instance['serial'] = $item->serial_number;
-                $instance['hostname'] = $machine->computer_name;
-                $instance['profile'] = $item->profile_name;
-                $instance['payload'] = $item->payload_name;
-                $data['profile_items'][] = $instance;
+        $out = array();
+        $queryobj = new Profile_model;
+        foreach ($queryobj->query($sql) as $obj) {
+            if ("$obj->count" !== "0") {
+                $obj->profile_name = $obj->profile_name ? $obj->profile_name : 'Unknown';
+                $out[] = $obj;
             }
         }
-        $obj = new View();
-        $obj->view('profileitem_detail', $data, $this->view_path);
+
+        jsonView($out);
+    } 
+
+   	/**
+     * Retrieve data for payload data popovers
+     *
+     **/
+    public function get_payload_data($profile_uuid = '', $payload_name = '')
+    {
+        // Remove non-alphanumeric characters
+        $profile_uuid = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $profile_uuid);
+        $payload_name = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $payload_name);
+
+        $sql = "SELECT payload_data
+                        FROM profile 
+                        WHERE profile_uuid = '$profile_uuid' AND payload_name = '$payload_name'
+                        LIMIT 1;";
+
+        $queryobj = new Profile_model;
+        $json_string = $queryobj->query($sql)[0]->payload_data;
+
+        # Try to make it prettier
+        $json_string = str_replace('\n', '<br />', $json_string);
+        $json_string = str_replace(array('\\"', '"{', '}"','\''), '', $json_string);
+        $json_string = str_replace('null', 'No payload', $json_string);
+        echo '<div style="white-space: pre-wrap">'. $json_string.'</div>';        
+    } 
+
+	/**
+     * Retrieve data in json format for client tab
+     *
+     **/
+    public function get_data($serial_number = '')
+    {
+        // Remove non-serial number characters
+        $serial_number = preg_replace("/[^A-Za-z0-9_\-]]/", '', $serial_number);
+
+        $sql = "SELECT profile_name, profile_uuid, user, payload_name, payload_display, timestamp, profile_removal_allowed, profile_removal_allowed, profile_install_date, profile_organization, profile_verification_state, profile_description
+                        FROM profile 
+                        WHERE serial_number = '$serial_number';";
+        
+        $queryobj = new Profile_model;
+        jsonView($queryobj->query($sql));
     }
-} // END class default_module
+} // END class profile_controller
