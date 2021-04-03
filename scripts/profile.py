@@ -74,7 +74,7 @@ def get_profiles_data(cachedir):
                                     profile['payload_data'] = 'Error Saving Payload Data'
 
                         # Add profile to profile_data
-                        profile_data.append(profile)
+                        profile_data.append(profile.copy())
 
     return profile_data
 
