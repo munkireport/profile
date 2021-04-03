@@ -11,7 +11,7 @@
         <th data-i18n="username" data-colname='profile.user'></th>
         <th data-i18n="profile.payload_type" data-colname='profile.payload_name'></th>
         <th data-i18n="profile.payloadname" data-colname='profile.payload_display'></th>
-        <th data-i18n="profile.payload_data" data-colname='profile.timestamp'></th>
+        <th data-i18n="profile.payload_data" data-colname='profile.serial_number'></th>
         <th data-i18n="profile.profile_removal_allowed" data-colname='profile.profile_removal_allowed'></th>		      	
         <th data-i18n="profile.profile_install_date" data-colname='profile.profile_install_date'></th>
         <th data-i18n="profile.profile_organization" data-colname='profile.profile_organization'></th>
@@ -57,7 +57,7 @@
                         { data: 'user' },
                         { data: 'payload_name' },
                         { data: 'payload_display' },
-                        { data: 'timestamp' },
+                        { data: 'serial_number' },
                         { data: 'profile_removal_allowed' },
                         { data: 'profile_install_date' },
                         { data: 'profile_organization' },
@@ -72,9 +72,11 @@
                         $('td:eq(4)', nRow).text(payload_display)
 
                         // View payload data button
-                        var profile_name=$('td:eq(0)', nRow).text();
+                        var sn=$('td:eq(5)', nRow).text();
                         var profile_uuid=$('td:eq(1)', nRow).text();
                         var payload_type=$('td:eq(3)', nRow).text();
+                        $('td:eq(5)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
+
                         $('td:eq(5)', nRow).html('<button onclick="view_payload_data(\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
 
                         // profile_removal_allowed

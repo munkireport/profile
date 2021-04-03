@@ -108,7 +108,7 @@
                 var profile_name=$('td:eq(2)', nRow).text();
                 var profile_uuid=$('td:eq(3)', nRow).text();
                 var payload_type=$('td:eq(5)', nRow).text();
-	        	$('td:eq(7)', nRow).html('<button onclick="view_payload_data(\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
+	        	$('td:eq(7)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
 
                 // profile_removal_allowed
                 var removal_allowed=$('td:eq(8)', nRow).text();

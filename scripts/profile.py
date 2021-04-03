@@ -59,14 +59,16 @@ def get_profiles_data(cachedir):
                 # Process profile payload items
                 elif item == 'ProfileItems':
                     for payload in inner_user[item]:
-                        for payload_item in payload:
 
+                        profile['payload_data'] = 'No Payload Data' # Set default payload_data value
+
+                        for payload_item in payload:
                             if payload_item == 'PayloadType':
                                 profile['payload_name'] = payload[payload_item]
                             elif payload_item == 'PayloadDisplayName':
                                 profile['payload_display'] = payload[payload_item]
                             elif payload_item == 'PayloadContent':
-                                profile['payload_data'] = json.dumps(payload[payload_item])
+                                profile['payload_data'] = json.dumps(payload[payload_item],default=str)
 
                         # Add profile to profile_data
                         profile_data.append(profile)
