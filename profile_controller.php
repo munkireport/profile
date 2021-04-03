@@ -51,26 +51,34 @@ class Profile_controller extends Module_controller
      * Retrieve data for payload data popovers
      *
      **/
-    public function get_payload_data($serial_number = '', $profile_uuid = '', $payload_name = '', $profile_name = '')
+    public function get_payload_data($serial_number, $profile_uuid, $payload_name)
+//    public function get_payload_data($serial_number = '', $profile_uuid = '', $payload_name = '', $profile_name = '')
     {
         // Remove non-alphanumeric characters
         $serial_number = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $serial_number);
         $profile_uuid = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $profile_uuid);
         $payload_name = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $payload_name);
-        $profile_name = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $profile_name);
 
         $sql = "SELECT payload_data
                         FROM profile 
-                        WHERE serial_number = '$serial_number' AND profile_uuid = '$profile_uuid' AND payload_name = '$payload_name' AND payload_name = '$profile_name'
+                        WHERE serial_number = '$serial_number' AND profile_uuid = '$profile_uuid' AND payload_name = '$payload_name'
                         LIMIT 1;";
 
         $queryobj = new Profile_model;
-        $json_string = $queryobj->query($sql)[0]->payload_data;
+        $returned_data = $queryobj->query($sql);
+
+        // Check if we have data
+        if (array_key_exists(0,$returned_data)){
+            $json_string = $queryobj->query($sql)[0]->payload_data;
+        } else{
+            $json_string = "No Payload Data";
+        }
 
         # Try to make it prettier
         $json_string = str_replace('\n', '<br />', $json_string);
         $json_string = str_replace(array('\\"', '"{', '}"','\''), '', $json_string);
-        $json_string = str_replace('null', 'No payload', $json_string);
+        $json_string = str_replace('{}', 'No Payload Data', $json_string);
+        $json_string = str_replace('null', 'No Payload Data', $json_string);
         echo '<div style="white-space: pre-wrap">'. $json_string.'</div>';        
     } 
 

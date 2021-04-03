@@ -69,7 +69,7 @@ def get_profiles_data(cachedir):
                                 profile['payload_display'] = payload[payload_item]
                             elif payload_item == 'PayloadContent':
                                 try:
-                                    profile['payload_data'] = json.dumps(payload[payload_item],default=str)
+                                    profile['payload_data'] = json.dumps(payload[payload_item],indent=2,default=str)
                                 except:
                                     profile['payload_data'] = 'Error Saving Payload Data'
 

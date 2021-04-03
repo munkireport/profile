@@ -43,8 +43,10 @@ class Profile_model extends \Model
             throw new Exception("Error Processing Profile Module Request: No data found", 1);
         } else if (substr( $data, 0, 30 ) != '<?xml version="1.0" encoding="' ) { // Else if old style text, process with old text based handler
 
-            // Translate profile strings to db fields
+            // Delete existing data
             $this->deleteWhere('serial_number=?', $this->serial_number);
+
+            // Translate profile strings to db fields
             $translate = array(
                 'ProfileUUID = ' => 'profile_uuid',
                 'ProfileName = ' => 'profile_name',
@@ -52,7 +54,10 @@ class Profile_model extends \Model
                 'PayloadName = ' => 'payload_name',
                 'PayloadDisplayName = ' => 'payload_display',
                 'PayloadData = ' => 'payload_data');
+
+            // Process each line
             foreach (explode("\n", $data) as $line) {
+
                // Translate standard entries
                 foreach ($translate as $search => $field) {
                   //the separator is what triggers the save for each display
@@ -69,7 +74,7 @@ class Profile_model extends \Model
                     }
                 } //end foreach translate
 
-             //timestamp added by the server
+                //timestamp added by the server
                 $this->timestamp = time();
             } //end foreach explode lines
 
@@ -89,7 +94,7 @@ class Profile_model extends \Model
                     $this->rs[$key] = $value;
                     if(array_key_exists($key, $profile)) {
                         $this->rs[$key] = $profile[$key];
-                    } else {
+                    } else if ($key != 'serial_number') {
                         $this->rs[$key] = null;
                     }
                 }

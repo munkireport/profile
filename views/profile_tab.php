@@ -72,12 +72,11 @@
                         $('td:eq(4)', nRow).text(payload_display)
 
                         // View payload data button
-                        var sn=$('td:eq(5)', nRow).text();
+                        var profile_name=$('td:eq(0)', nRow).text();
                         var profile_uuid=$('td:eq(1)', nRow).text();
                         var payload_type=$('td:eq(3)', nRow).text();
+                        var sn=$('td:eq(5)', nRow).text();
                         $('td:eq(5)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
-
-                        $('td:eq(5)', nRow).html('<button onclick="view_payload_data(\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
 
                         // profile_removal_allowed
                         var removal_allowed=$('td:eq(6)', nRow).text();
@@ -112,8 +111,8 @@
     });
 
     // Get payload data via API and display in modal
-    function view_payload_data(profile_uuid, payload_type, profile_name){
-        $.get(appUrl + '/module/profile/get_payload_data/'+profile_uuid+'/'+payload_type, function(data, status){
+    function view_payload_data(serial_number, profile_uuid, payload_type, profile_name){
+        $.get(appUrl + '/module/profile/get_payload_data/'+serial_number+'/'+profile_uuid+'/'+payload_type, function(data, status){
 
             // Create large modal
             $('#myModal .modal-dialog').addClass('modal-lg');

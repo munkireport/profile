@@ -141,8 +141,8 @@
 	});
 
     // Get payload data via API and display in modal
-    function view_payload_data(profile_uuid, payload_type, profile_name){
-        $.get(appUrl + '/module/profile/get_payload_data/'+profile_uuid+'/'+payload_type, function(data, status){
+    function view_payload_data(serial_number, profile_uuid, payload_type, profile_name){
+        $.get(appUrl + '/module/profile/get_payload_data/'+serial_number+'/'+profile_uuid+'/'+payload_type, function(data, status){
 
             // Create large modal
             $('#myModal .modal-dialog').addClass('modal-lg');
