@@ -1,4 +1,7 @@
 <?php
+
+use CFPropertyList\CFPropertyList;
+
 class Profile_model extends \Model
 {
     public function __construct($serial = '')
