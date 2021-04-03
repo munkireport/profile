@@ -26,7 +26,7 @@ class Profile_model extends \Model
             $this->retrieve_record($serial);
         }
 
-        $this->serial = $serial;
+        $this->serial_number = $serial;
     }
 
     // ------------------------------------------------------------------------
@@ -79,7 +79,10 @@ class Profile_model extends \Model
             $parser = new CFPropertyList();
             $parser->parse($data, CFPropertyList::FORMAT_XML);
             $plist = $parser->toArray();
-            
+
+            // Delete existing data
+            $this->deleteWhere('serial_number=?', $this->serial_number);
+
             // Process each profile/payload combo
             foreach ($plist as $profile){
                 foreach ($this->rs as $key => $value) {
