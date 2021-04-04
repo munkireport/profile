@@ -115,12 +115,17 @@ def get_profiles_data(cachedir):
             localProfilePlist = plistlib.readPlistFromString(output)
 
             profile = {}
+            for item in localProfilePlist:
+                for key in localProfilePlist[item]:
+                    profile['payload_name'] = key
+                
             profile['profile_name'] = localProfile
             profile['payload_data'] = json.dumps(localProfilePlist,indent=2,default=str)
             profile['profile_method'] = "Emulated"
             profile['profile_uuid'] = localProfileUUID
             profile['user'] = "System Level"
-            profile['payload_name'] = "LocalMCX"
+            profile['profile_removal_allowed'] = "true"
+            
             
              # Add profile to profile_data
             profile_data.append(profile.copy())

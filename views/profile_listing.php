@@ -108,11 +108,11 @@
                 // View payload data button
                 var profile_name=$('td:eq(2)', nRow).text();
                 var profile_uuid=$('td:eq(3)', nRow).text();
-                var payload_type=$('td:eq(5)', nRow).text();
-	        	$('td:eq(7)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
+                var payload_type=$('td:eq(6)', nRow).text();
+	        	$('td:eq(8)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
 
                 // profile_removal_allowed
-                var removal_allowed=$('td:eq(8)', nRow).text();
+                var removal_allowed=$('td:eq(9)', nRow).text();
                 removal_allowed = removal_allowed == '' ? i18n.t('yes') :
                 removal_allowed = removal_allowed == 'yes' ? i18n.t('yes') :
                 removal_allowed = removal_allowed == 'false' ? i18n.t('yes') :
@@ -121,22 +121,22 @@
                 removal_allowed = removal_allowed == 'disallowed' ? i18n.t('no') :
                 removal_allowed = removal_allowed == 'true' ? i18n.t('no') :
                 (removal_allowed = removal_allowed == 'no' ? i18n.t('no') : removal_allowed)
-                $('td:eq(8)', nRow).text(removal_allowed)
+                $('td:eq(9)', nRow).text(removal_allowed)
 
                 // Format profile_install_date
-                var event = parseInt($('td:eq(9)', nRow).text());
+                var event = parseInt($('td:eq(10)', nRow).text());
                 if (event){
                     var date = new Date(event * 1000);
-                    $('td:eq(9)', nRow).html('<span title="' + moment(date).fromNow() + '">'+moment(date).format('llll')+'</span>');
+                    $('td:eq(10)', nRow).html('<span title="' + moment(date).fromNow() + '">'+moment(date).format('llll')+'</span>');
                 }
 
                 // profile_verification_state
-                var verification_state=$('td:eq(11)', nRow).text();
+                var verification_state=$('td:eq(12)', nRow).text();
                 verification_state = verification_state == 'verified' ? i18n.t('profile.verified') :
                 verification_state = verification_state == 'signed' ? i18n.t('profile.verified') :
                 verification_state = verification_state == 'not verified' ? i18n.t('profile.not_verified') :
                 (verification_state = verification_state == 'unsigned' ? i18n.t('profile.not_verified') : verification_state)
-                $('td:eq(11)', nRow).text(verification_state)
+                $('td:eq(12)', nRow).text(verification_state)
 		    }
 	    });
 	});
