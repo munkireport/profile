@@ -56,6 +56,7 @@
                         { data: 'profile_name' },
                         { data: 'profile_uuid' },
                         { data: 'user' },
+                        { data: 'payload_method'},
                         { data: 'payload_name' },
                         { data: 'payload_display' },
                         { data: 'serial_number' },
