@@ -13,7 +13,8 @@
 			<th data-i18n="serial" data-colname='reportdata.serial_number'></th>
             <th data-i18n="profile.profilename" data-colname='profile.profile_name'></th>
             <th data-i18n="profile.uuid" data-colname='profile.profile_uuid'></th>
-            <th data-i18n="username" data-colname='profile.user'></th>
+            <th data-i18n="profile.scope" data-colname='profile.user'></th>
+            <th data-i18n="profile.method" data-colname='profile.method'></th>
             <th data-i18n="profile.payload_type" data-colname='profile.payload_name'></th>
             <th data-i18n="profile.payloadname" data-colname='profile.payload_display'></th>
             <th data-i18n="profile.payload_data" data-colname='profile.timestamp'></th>

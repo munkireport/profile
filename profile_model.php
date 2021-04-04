@@ -21,6 +21,7 @@ class Profile_model extends \Model
         $this->rs['profile_verification_state'] = '';
         $this->rs['user'] = '';
         $this->rs['profile_description'] = '';
+        $this->rs['profile_method'] = '';
 
         if ($serial) {
             $this->retrieve_record($serial);
