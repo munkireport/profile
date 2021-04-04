@@ -27,6 +27,13 @@ def get_profiles_data(cachedir):
 
         for inner_user in profile_plist[profile_user]:
             # Process each user's profile data
+            profile['profile_uuid'] = ''
+            profile['profile_name'] = ''
+            profile['profile_description'] = ''
+            profile['profile_organization'] = ''
+            profile['profile_verification_state'] = ''
+            profile['profile_removal_allowed'] = ''
+            profile['profile_install_date'] = ''
 
             for item in inner_user:
 
@@ -61,6 +68,8 @@ def get_profiles_data(cachedir):
                     for payload in inner_user[item]:
 
                         profile['payload_data'] = 'No Payload Data' # Set default payload_data value
+                        profile['payload_name'] = ''
+                        profile['payload_display'] = ''
 
                         for payload_item in payload:
                             if payload_item == 'PayloadType':
