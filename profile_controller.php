@@ -52,7 +52,6 @@ class Profile_controller extends Module_controller
      *
      **/
     public function get_payload_data($serial_number, $profile_uuid, $payload_name)
-//    public function get_payload_data($serial_number = '', $profile_uuid = '', $payload_name = '', $profile_name = '')
     {
         // Remove non-alphanumeric characters
         $serial_number = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $serial_number);

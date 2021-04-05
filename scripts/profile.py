@@ -36,7 +36,7 @@ def get_profiles_data(cachedir):
             profile['profile_removal_allowed'] = ''
             profile['profile_install_date'] = ''
             profile['profile_method'] = "Native"
-            
+
             for item in inner_user:
                 
                 # Set the user level of profile
