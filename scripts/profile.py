@@ -125,8 +125,6 @@ def get_profiles_data(cachedir):
             profile['user'] = "System Level"
             profile['profile_removal_allowed'] = "true"           
             for item in localProfilePlist:
-                profile['profile_name'] = localProfile
-                profile['profile_uuid'] = localProfileUUID
                 # Reset keys for next payload
                 profile['payload_data'] = 'No Payload Data' # Set default payload_data value
                 profile['payload_name'] = ''
