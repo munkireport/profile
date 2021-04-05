@@ -135,9 +135,7 @@ def get_profiles_data(cachedir):
                 for key in localProfilePlist[item]:
                     profile['payload_name'] = key
                     try:
-                        print("Key: " + key)
                         profile['payload_data'] = json.dumps(localProfilePlist[item][key],indent=2,default=str)
-                        print(profile['payload_data'])
                     except:
                         profile['payload_data'] = 'Error Saving Payload Data'
                   # Add profile to profile_data
