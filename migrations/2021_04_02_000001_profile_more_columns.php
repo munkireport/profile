@@ -19,6 +19,7 @@ class ProfileMoreColumns extends Migration
             $table->string('payload_name')->nullable()->change();
             $table->string('payload_display')->nullable()->change();
             $table->text('payload_data')->nullable()->change();
+            $table->string('profile_method')->nullable();
 
             // New columns
             $table->bigInteger('profile_install_date')->nullable();
@@ -27,9 +28,12 @@ class ProfileMoreColumns extends Migration
             $table->string('user')->nullable();
             $table->text('profile_description')->nullable();
 
+            // Create indexes for new columns
             $table->index('profile_organization');
             $table->index('profile_verification_state');
             $table->index('user');
+            $table->index('profile_method');
+            
         });
      }
     
@@ -52,6 +56,7 @@ class ProfileMoreColumns extends Migration
             $table->dropColumn('profile_verification_state');
             $table->dropColumn('user');
             $table->dropColumn('profile_description');
+            $table->dropColumn('profile_method');
         });
     }
 }

@@ -27,7 +27,8 @@ def get_profiles_data(cachedir):
         profile = {}
 
         for inner_user in profile_plist[profile_user]:
-            # Process each user's profile data
+            
+            # Reset keys for next profile
             profile['profile_uuid'] = ''
             profile['profile_name'] = ''
             profile['profile_description'] = ''
@@ -37,6 +38,7 @@ def get_profiles_data(cachedir):
             profile['profile_install_date'] = ''
             profile['profile_method'] = "Native"
 
+            # Process each user's profile data
             for item in inner_user:
                 
                 # Set the user level of profile
@@ -58,17 +60,18 @@ def get_profiles_data(cachedir):
                 elif item == 'ProfileUninstallPolicy' or item == 'ProfileRemovalDisallowed':
                     profile['profile_removal_allowed'] = inner_user[item]
                 elif item == 'ProfileInstallDate':
-                        installed = str(inner_user[item])                    
-                        date_str, tz = installed[:-5], installed[-5:]
-                        dt_utc = datetime.strptime(date_str.strip(), "%Y-%m-%d %H:%M:%S")
-                        dt = dt_utc.replace(tzinfo=FixedOffset(tz))
-                        utc_naive = dt.replace(tzinfo=None) - dt.utcoffset()
-                        profile['profile_install_date'] = int((utc_naive - datetime(1970, 1, 1)).total_seconds())
+                    installed = str(inner_user[item])                    
+                    date_str, tz = installed[:-5], installed[-5:]
+                    dt_utc = datetime.strptime(date_str.strip(), "%Y-%m-%d %H:%M:%S")
+                    dt = dt_utc.replace(tzinfo=FixedOffset(tz))
+                    utc_naive = dt.replace(tzinfo=None) - dt.utcoffset()
+                    profile['profile_install_date'] = int((utc_naive - datetime(1970, 1, 1)).total_seconds())
 
                 # Process profile payload items
                 elif item == 'ProfileItems':
                     for payload in inner_user[item]:
 
+                        # Reset keys for next payload
                         profile['payload_data'] = 'No Payload Data' # Set default payload_data value
                         profile['payload_name'] = ''
                         profile['payload_display'] = ''
@@ -91,22 +94,22 @@ def get_profiles_data(cachedir):
     #   Check if Profile Emulation setting is enabled in ManagedInstalls preference domain
     #   If so, check localMCX for profile data
     if CFPreferencesCopyAppValue('EmulateProfileSupport', 'ManagedInstalls'):
-        cmd = ['dscl', '.', 'list', 'ComputerGroups']
+        cmd = ['/usr/bin/dscl', '.', 'list', 'ComputerGroups']
         proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (output, unused_error) = proc.communicate()
         localMCXProfileList = output.splitlines()
-        
+
         for localProfile in localMCXProfileList:
-            cmd = ['dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'GeneratedUID']
+            cmd = ['/usr/bin/dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'GeneratedUID']
             proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
                                     stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             (localProfileUUID, unused_error) = proc.communicate()
             localProfileUUID = localProfileUUID.replace('GeneratedUID: ', '').rstrip().lstrip()
 
-            cmd = ['dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'MCXSettings']
+            cmd = ['/usr/bin/dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'MCXSettings']
             proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
                                     stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -118,18 +121,20 @@ def get_profiles_data(cachedir):
             for item in localProfilePlist:
                 for key in localProfilePlist[item]:
                     profile['payload_name'] = key
-                
+
             profile['profile_name'] = localProfile
-            profile['payload_data'] = json.dumps(localProfilePlist,indent=2,default=str)
             profile['profile_method'] = "Emulated"
             profile['profile_uuid'] = localProfileUUID
             profile['user'] = "System Level"
             profile['profile_removal_allowed'] = "true"
-            
-            
+
+            try:
+                profile['payload_data'] = json.dumps(localProfilePlist,indent=2,default=str)
+            except:
+                profile['payload_data'] = 'Error Saving Payload Data'
+
              # Add profile to profile_data
             profile_data.append(profile.copy())
-           
 
     return profile_data
 

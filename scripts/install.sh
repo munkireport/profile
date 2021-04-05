@@ -14,6 +14,9 @@ if [ $? = 0 ]; then
 	# Set preference to include this file in the preflight check
 	setreportpref "profile" "${CACHEPATH}profile.plist"
 
+	# Remove old txt based cache file
+	rm -f "${CACHEPATH}profile.txt"
+
 else
 	echo "Failed to download all required components!"
 	rm -f "${MUNKIPATH}preflight.d/profile.py"
