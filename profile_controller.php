@@ -90,7 +90,7 @@ class Profile_controller extends Module_controller
         // Remove non-serial number characters
         $serial_number = preg_replace("/[^A-Za-z0-9_\-]]/", '', $serial_number);
 
-        $sql = "SELECT profile_name, profile_uuid, user, payload_name, payload_display, serial_number, profile_removal_allowed, profile_removal_allowed, profile_install_date, profile_organization, profile_verification_state, profile_description
+        $sql = "SELECT profile_name, profile_uuid, user, payload_name, payload_display, serial_number, profile_removal_allowed, profile_removal_allowed, profile_install_date, profile_organization, profile_verification_state, profile_description, profile_method
                         FROM profile 
                         WHERE serial_number = '$serial_number';";
         

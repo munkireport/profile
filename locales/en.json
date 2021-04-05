@@ -12,8 +12,10 @@
     "profile_description": "Profile Description",
     "payload_data": "Payload Data",
     "payload_type": "Payload Type",
+    "scope": "Scope",
     "not_verified": "Not Verified",
     "verified": "Verified",
     "view": "View",
-    "uuid": "UUID"
+    "uuid": "UUID",
+    "method": "Install Method"
 }

@@ -7,6 +7,7 @@ import sys
 import platform
 import json
 from datetime import datetime, timedelta, tzinfo
+from Foundation import CFPreferencesCopyAppValue
 
 def get_profiles_data(cachedir):
 
@@ -34,9 +35,10 @@ def get_profiles_data(cachedir):
             profile['profile_verification_state'] = ''
             profile['profile_removal_allowed'] = ''
             profile['profile_install_date'] = ''
+            profile['profile_method'] = "Native"
 
             for item in inner_user:
-
+                
                 # Set the user level of profile
                 if profile_user == "_computerlevel":
                     profile['user'] = "System Level"
@@ -84,6 +86,50 @@ def get_profiles_data(cachedir):
 
                         # Add profile to profile_data
                         profile_data.append(profile.copy())
+
+    # Munki in Big Sur+ supports profile emulation via MCX
+    #   Check if Profile Emulation setting is enabled in ManagedInstalls preference domain
+    #   If so, check localMCX for profile data
+    if CFPreferencesCopyAppValue('EmulateProfileSupport', 'ManagedInstalls'):
+        cmd = ['dscl', '.', 'list', 'ComputerGroups']
+        proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        (output, unused_error) = proc.communicate()
+        localMCXProfileList = output.splitlines()
+        
+        for localProfile in localMCXProfileList:
+            cmd = ['dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'GeneratedUID']
+            proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
+                                    stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (localProfileUUID, unused_error) = proc.communicate()
+            localProfileUUID = localProfileUUID.replace('GeneratedUID: ', '').rstrip().lstrip()
+
+            cmd = ['dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'MCXSettings']
+            proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
+                                    stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (output, unused_error) = proc.communicate()
+            output = output.replace('MCXSettings:', '').rstrip().lstrip()
+            localProfilePlist = plistlib.readPlistFromString(output)
+
+            profile = {}
+            for item in localProfilePlist:
+                for key in localProfilePlist[item]:
+                    profile['payload_name'] = key
+                
+            profile['profile_name'] = localProfile
+            profile['payload_data'] = json.dumps(localProfilePlist,indent=2,default=str)
+            profile['profile_method'] = "Emulated"
+            profile['profile_uuid'] = localProfileUUID
+            profile['user'] = "System Level"
+            profile['profile_removal_allowed'] = "true"
+            
+            
+             # Add profile to profile_data
+            profile_data.append(profile.copy())
+           
 
     return profile_data
 
