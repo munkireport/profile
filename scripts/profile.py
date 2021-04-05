@@ -102,42 +102,53 @@ def get_profiles_data(cachedir):
         localMCXProfileList = output.splitlines()
 
         for localProfile in localMCXProfileList:
-            cmd = ['/usr/bin/dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'GeneratedUID']
-            proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
-                                    stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            (localProfileUUID, unused_error) = proc.communicate()
-            localProfileUUID = localProfileUUID.replace('GeneratedUID: ', '').rstrip().lstrip()
+            isValidLocalMCX = False
+            
+            try:
+                cmd = ['/usr/bin/dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'GeneratedUID']
+                proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
+                                        stdin=subprocess.PIPE,
+                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                (localProfileUUID, unused_error) = proc.communicate()
+                localProfileUUID = localProfileUUID.replace('GeneratedUID: ', '').rstrip().lstrip()
+                isValidLocalMCX = True
+            except:
+                isValidLocalMCX = False
 
-            cmd = ['/usr/bin/dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'MCXSettings']
-            proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
-                                    stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            (output, unused_error) = proc.communicate()
-            output = output.replace('MCXSettings:', '').rstrip().lstrip()
-            localProfilePlist = plistlib.readPlistFromString(output)
+            try:
+                cmd = ['/usr/bin/dscl', '.', 'read', 'ComputerGroups/' + localProfile, 'MCXSettings']
+                proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
+                                        stdin=subprocess.PIPE,
+                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                (output, unused_error) = proc.communicate()
+                output = output.replace('MCXSettings:', '').rstrip().lstrip()
+                localProfilePlist = plistlib.readPlistFromString(output)
+                isValidLocalMCX = True
+            except:
+                isValidLocalMCX = False
 
-            profile = {}
-            # Reset keys for next profile
-            profile['profile_name'] = localProfile
-            profile['profile_uuid'] = localProfileUUID
-            profile['profile_method'] = "Emulated"
-            profile['user'] = "System Level"
-            profile['profile_removal_allowed'] = "true"           
-            for item in localProfilePlist:
-                # Reset keys for next payload
-                profile['payload_data'] = 'No Payload Data' # Set default payload_data value
-                profile['payload_name'] = ''
-                profile['payload_display'] = ''
-                # Process profile payload items
-                for key in localProfilePlist[item]:
-                    profile['payload_name'] = key
-                    try:
-                        profile['payload_data'] = json.dumps(localProfilePlist[item][key],indent=2,default=str)
-                    except:
-                        profile['payload_data'] = 'Error Saving Payload Data'
-                  # Add profile to profile_data
-                    profile_data.append(profile.copy())
+            if isValidLocalMCX:
+                profile = {}
+                # Reset keys for next profile
+                profile['profile_name'] = localProfile
+                profile['profile_uuid'] = localProfileUUID
+                profile['profile_method'] = "Emulated"
+                profile['user'] = "System Level"
+                profile['profile_removal_allowed'] = "true"           
+                for item in localProfilePlist:
+                    # Reset keys for next payload
+                    profile['payload_data'] = 'No Payload Data' # Set default payload_data value
+                    profile['payload_name'] = ''
+                    profile['payload_display'] = ''
+                    # Process profile payload items
+                    for key in localProfilePlist[item]:
+                        profile['payload_name'] = key
+                        try:
+                            profile['payload_data'] = json.dumps(localProfilePlist[item][key],indent=2,default=str)
+                        except:
+                            profile['payload_data'] = 'Error Saving Payload Data'
+                      # Add profile to profile_data
+                        profile_data.append(profile.copy())
 
     return profile_data
 
