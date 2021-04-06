@@ -65,7 +65,7 @@ def get_profiles_data(cachedir):
                     dt_utc = datetime.strptime(date_str.strip(), "%Y-%m-%d %H:%M:%S")
                     dt = dt_utc.replace(tzinfo=FixedOffset(tz))
                     utc_naive = dt.replace(tzinfo=None) - dt.utcoffset()
-                    profile['profile_install_date'] = int((utc_naive - datetime(1970, 1, 1)).total_seconds())
+                    profile['profile_install_date'] = str(int((utc_naive - datetime(1970, 1, 1)).total_seconds()))
 
             # Process profile payload items
             if 'ProfileItems' in inner_user:
