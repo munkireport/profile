@@ -22,3 +22,4 @@ Table Schema
 * profile_verification_state - varchar(255) - Profile's verification state
 * user - varchar(255) - User that the profile belongs to
 * profile_description - text - Profile's description
+* profile_method - varchar(255) - If profile is emulated MCX or native mobile configuration profile

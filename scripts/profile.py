@@ -67,28 +67,28 @@ def get_profiles_data(cachedir):
                     utc_naive = dt.replace(tzinfo=None) - dt.utcoffset()
                     profile['profile_install_date'] = int((utc_naive - datetime(1970, 1, 1)).total_seconds())
 
-                # Process profile payload items
-                elif item == 'ProfileItems':
-                    for payload in inner_user[item]:
+            # Process profile payload items
+            if 'ProfileItems' in inner_user:
+                for payload in inner_user['ProfileItems']:
 
-                        # Reset keys for next payload
-                        profile['payload_data'] = 'No Payload Data' # Set default payload_data value
-                        profile['payload_name'] = ''
-                        profile['payload_display'] = ''
+                    # Reset keys for next payload
+                    profile['payload_data'] = 'No Payload Data' # Set default payload_data value
+                    profile['payload_name'] = ''
+                    profile['payload_display'] = ''
 
-                        for payload_item in payload:
-                            if payload_item == 'PayloadType':
-                                profile['payload_name'] = payload[payload_item]
-                            elif payload_item == 'PayloadDisplayName':
-                                profile['payload_display'] = payload[payload_item]
-                            elif payload_item == 'PayloadContent':
-                                try:
-                                    profile['payload_data'] = json.dumps(payload[payload_item],indent=2,default=str)
-                                except:
-                                    profile['payload_data'] = 'Error Saving Payload Data'
+                    for payload_item in payload:
+                        if payload_item == 'PayloadType':
+                            profile['payload_name'] = payload[payload_item]
+                        elif payload_item == 'PayloadDisplayName':
+                            profile['payload_display'] = payload[payload_item]
+                        elif payload_item == 'PayloadContent':
+                            try:
+                                profile['payload_data'] = json.dumps(payload[payload_item],indent=2,default=str)
+                            except:
+                                profile['payload_data'] = 'Error Saving Payload Data'
 
-                        # Add profile to profile_data
-                        profile_data.append(profile.copy())
+                    # Add profile to profile_data
+                    profile_data.append(profile.copy())
 
     # Munki in Big Sur+ supports profile emulation via MCX
     #   Check if Profile Emulation setting is enabled in ManagedInstalls preference domain
