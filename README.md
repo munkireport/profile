@@ -15,11 +15,11 @@ Table Schema
 * profile_removal_allowed - varchar(255)  - Yes or No 
 * payload_name - varchar(255) - Payload Name
 * payload_display - varchar(255) - Payload Display Name
-* payload_data - text - Payload Data
+* payload_data - mediumtext - Payload Data
 * timestamp - bigint - Unix timestamp when the report was uploaded
 * profile_install_date - bigint - Unix timestamp when the profile was installed
 * profile_organization - varchar(255) - Organization of the profile
 * profile_verification_state - varchar(255) - Profile's verification state
 * user - varchar(255) - User that the profile belongs to
-* profile_description - text - Profile's description
+* profile_description - mediumtext - Profile's description
 * profile_method - varchar(255) - If profile is emulated MCX or native mobile configuration profile
