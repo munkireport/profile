@@ -18,7 +18,6 @@
             <th data-i18n="profile.payload_type" data-colname='profile.payload_name'></th>
             <th data-i18n="profile.payloadname" data-colname='profile.payload_display'></th>
             <th data-i18n="profile.payload_data" data-colname='profile.timestamp'></th>
-            <th data-i18n="profile.profile_removal_allowed" data-colname='profile.profile_removal_allowed'></th>		      	
             <th data-i18n="profile.profile_install_date" data-colname='profile.profile_install_date'></th>
             <th data-i18n="profile.profile_organization" data-colname='profile.profile_organization'></th>
             <th data-i18n="profile.profile_verification_state" data-colname='profile.profile_verification_state'></th>
@@ -111,32 +110,32 @@
                 var payload_type=$('td:eq(6)', nRow).text();
 	        	$('td:eq(8)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
 
-                // profile_removal_allowed
-                var removal_allowed=$('td:eq(9)', nRow).text();
-                removal_allowed = removal_allowed == '' ? i18n.t('yes') :
-                removal_allowed = removal_allowed == 'yes' ? i18n.t('yes') :
-                removal_allowed = removal_allowed == 'false' ? i18n.t('yes') :
-                removal_allowed = removal_allowed == 'allowed' ? i18n.t('yes') :
-                removal_allowed = removal_allowed == 'None' ? i18n.t('') :
-                removal_allowed = removal_allowed == 'disallowed' ? i18n.t('no') :
-                removal_allowed = removal_allowed == 'true' ? i18n.t('no') :
-                (removal_allowed = removal_allowed == 'no' ? i18n.t('no') : removal_allowed)
-                $('td:eq(9)', nRow).text(removal_allowed)
+//                // profile_removal_allowed
+//                var removal_allowed=$('td:eq(9)', nRow).text();
+//                removal_allowed = removal_allowed == '' ? i18n.t('yes') :
+//                removal_allowed = removal_allowed == 'yes' ? i18n.t('yes') :
+//                removal_allowed = removal_allowed == 'false' ? i18n.t('yes') :
+//                removal_allowed = removal_allowed == 'allowed' ? i18n.t('yes') :
+//                removal_allowed = removal_allowed == 'None' ? i18n.t('') :
+//                removal_allowed = removal_allowed == 'disallowed' ? i18n.t('no') :
+//                removal_allowed = removal_allowed == 'true' ? i18n.t('no') :
+//                (removal_allowed = removal_allowed == 'no' ? i18n.t('no') : removal_allowed)
+//                $('td:eq(9)', nRow).text(removal_allowed)
 
                 // Format profile_install_date
-                var event = parseInt($('td:eq(10)', nRow).text());
+                var event = parseInt($('td:eq(9)', nRow).text());
                 if (event){
                     var date = new Date(event * 1000);
-                    $('td:eq(10)', nRow).html('<span title="' + moment(date).fromNow() + '">'+moment(date).format('llll')+'</span>');
+                    $('td:eq(9)', nRow).html('<span title="' + moment(date).fromNow() + '">'+moment(date).format('llll')+'</span>');
                 }
 
                 // profile_verification_state
-                var verification_state=$('td:eq(12)', nRow).text();
+                var verification_state=$('td:eq(11)', nRow).text();
                 verification_state = verification_state == 'verified' ? i18n.t('profile.verified') :
                 verification_state = verification_state == 'signed' ? i18n.t('profile.verified') :
                 verification_state = verification_state == 'not verified' ? i18n.t('profile.not_verified') :
                 (verification_state = verification_state == 'unsigned' ? i18n.t('profile.not_verified') : verification_state)
-                $('td:eq(12)', nRow).text(verification_state)
+                $('td:eq(11)', nRow).text(verification_state)
 		    }
 	    });
 	});
