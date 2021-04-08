@@ -1,9 +1,21 @@
 {
-    "noprofile": "No Profile",
+    "noprofile": "No Profiles",
     "payload": "Payloads",
     "profile": "Profiles",
     "profilename": "Profile Name",
     "payloadname": "Payload Name",
     "report": "Profile Report",
-    "uuid": "UUID"
+    "profile_organization": "Profile Organization",
+    "profile_verification_state": "Profile Verification",
+    "profile_install_date": "Install Date",
+    "profile_removal_allowed": "Removal Allowed",
+    "profile_description": "Profile Description",
+    "payload_data": "Payload Data",
+    "payload_type": "Payload Type",
+    "scope": "Scope",
+    "not_verified": "Not Verified",
+    "verified": "Verified",
+    "view": "View",
+    "uuid": "UUID",
+    "method": "Install Method"
 }

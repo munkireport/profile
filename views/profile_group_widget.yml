@@ -1,0 +1,9 @@
+type: scrollbox
+widget_id: profile-group-widget
+api_url: /module/profile/get_profile_groups
+i18n_title: profile.profile
+icon: fa-certificate
+listing_link: /show/listing/profile/profile/
+search_key: profile_name
+i18n_empty_result: profile.noprofile
+badge: count
