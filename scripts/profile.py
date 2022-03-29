@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/local/munki/munki-python
 
 import subprocess
 import plistlib
@@ -17,7 +17,11 @@ def get_profiles_data(cachedir):
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (output, unused_error) = proc.communicate()
 
-    profile_plist = plistlib.readPlist(cachedir+'profile_temp.plist')
+    try:
+        profile_plist = plistlib.readPlist(cachedir+'profile_temp.plist')
+    except AttributeError as e:
+        with open(cachedir+'profile_temp.plist', 'rb') as fp:
+            profile_plist = plistlib.load(fp)
 
     profile_data = []
 
@@ -99,7 +103,7 @@ def get_profiles_data(cachedir):
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (output, unused_error) = proc.communicate()
-        localMCXProfileList = output.splitlines()
+        localMCXProfileList = output.decode().splitlines()
 
         for localProfile in localMCXProfileList:
             isValidLocalMCX = False
@@ -171,23 +175,20 @@ class FixedOffset(tzinfo):
     def __repr__(self):
         return 'FixedOffset(%d)' % (self.utcoffset().total_seconds() / 60)
 
-def getMajorOsVersion():
-    """Returns the major OS version."""
-    os_version_tuple = platform.mac_ver()[0].split('.')
-    return int(os_version_tuple[0])
-
-def getMinorOsVersion():
-    """Returns the minor OS version."""
-    os_version_tuple = platform.mac_ver()[0].split('.')
-    return int(os_version_tuple[1])
+def getDarwinVersion():
+    """Returns the Darwin version."""
+    # Catalina -> 10.15.7 -> 19.6.0 -> 19
+    # os_version_tuple = platform.mac_ver()[0].split('.')
+    # return int(os_version_tuple[1])
+    darwin_version_tuple = platform.release().split('.')
+    return int(darwin_version_tuple[0]) 
     
 def main():
-
     """Main"""
 
-    # Check that we're running 10.7 or higher
-    if getMajorOsVersion() == 10 and getMinorOsVersion() < 7:
-        print "Profiles module requires macOS 10.7 or higher to run"
+    # Check that we're running 10.7 (Darwin 11) or higher
+    if getDarwinVersion() <= 11:
+        print("Profiles module requires macOS 10.7 or higher to run")
         exit(0)
 
     # Set cache directory
@@ -204,7 +205,11 @@ def main():
 
     # Write profile results to cache file
     output_plist = os.path.join(cachedir, 'profile.plist')
-    plistlib.writePlist(info, output_plist)
+    try:
+        plistlib.writePlist(info, output_plist)
+    except:
+        with open(output_plist, 'wb') as fp:
+            plistlib.dump(info, fp, fmt=plistlib.FMT_XML)
 #    print plistlib.writePlistToString(info)
 
 if __name__ == "__main__":
