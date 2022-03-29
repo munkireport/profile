@@ -1,4 +1,7 @@
 #!/usr/local/munki/munki-python
+"""
+Extracts information about the profiles from system profiler
+"""
 
 import subprocess
 import plistlib
