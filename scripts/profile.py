@@ -1,4 +1,4 @@
-#!/usr/local/munkireport/munkireport-python3
+#!/usr/local/munkireport/munkireport-python2
 """
 Extracts information about the profiles from system profiler
 """

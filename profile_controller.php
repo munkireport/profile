@@ -75,6 +75,7 @@ class Profile_controller extends Module_controller
 
         # Try to make it prettier
         $json_string = str_replace('\n', '<br />', $json_string);
+        $json_string = str_replace('\t', '     ', $json_string);
         $json_string = str_replace(array('\\"', '"{', '}"','\''), '', $json_string);
         $json_string = str_replace('{}', 'No Payload Data', $json_string);
         $json_string = str_replace('null', 'No Payload Data', $json_string);
