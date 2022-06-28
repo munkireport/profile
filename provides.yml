@@ -1,0 +1,16 @@
+client_tabs:
+    profile-tab:
+        view: profile_tab
+        i18n: profile.profile
+        badge: profile-cnt
+listings:
+    profile:
+        view: profile_listing
+        i18n: profile.profile
+reports:
+    profile:
+        view: profile_report
+        i18n: profile.report
+widgets:
+    profile_group:
+        view: profile_group_widget
