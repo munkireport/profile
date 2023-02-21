@@ -1,10 +1,5 @@
 {
     "name": "munkireport/profile",
     "description": "Module for munkireport.",
-    "license": "MIT",
-
-    "require": {
-        "php": ">=7.3",
-        "illuminate/database": "^7.0"
-    }
+    "license": "MIT"
 }
