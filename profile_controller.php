@@ -31,7 +31,9 @@ class Profile_controller extends Module_controller
      **/
     public function get_profile_groups()
     {
-        $sql = "SELECT profile_name, COUNT(DISTINCT serial_number) AS count FROM profile 
+        $sql = "SELECT profile_name, COUNT(DISTINCT serial_number) AS count FROM profile
+                LEFT JOIN reportdata USING (serial_number)
+                WHERE ".get_machine_group_filter('')."
                 GROUP BY profile_name
                 ORDER BY COUNT DESC";
 
@@ -80,7 +82,7 @@ class Profile_controller extends Module_controller
         $json_string = str_replace('{}', 'No Payload Data', $json_string);
         $json_string = str_replace('null', 'No Payload Data', $json_string);
         echo '<div style="white-space: pre-wrap">'. $json_string.'</div>';        
-    } 
+    }
 
 	/**
      * Retrieve data in json format for client tab
@@ -94,7 +96,7 @@ class Profile_controller extends Module_controller
         $sql = "SELECT profile_name, profile_uuid, user, profile_method, payload_name, payload_display, serial_number, profile_removal_allowed, profile_install_date, profile_organization, profile_verification_state, profile_description
                         FROM profile 
                         WHERE serial_number = '$serial_number';";
-        
+
         $queryobj = new Profile_model;
         jsonView($queryobj->query($sql));
     }
