@@ -106,7 +106,7 @@ def get_profiles_data(cachedir):
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (output, unused_error) = proc.communicate()
-        localMCXProfileList = output.decode().splitlines()
+        localMCXProfileList = output.decode("utf-8", errors="ignore").splitlines()
 
         for localProfile in localMCXProfileList:
             isValidLocalMCX = False
@@ -117,7 +117,7 @@ def get_profiles_data(cachedir):
                                         stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 (localProfileUUID, unused_error) = proc.communicate()
-                localProfileUUID = localProfileUUID.replace('GeneratedUID: ', '').rstrip().lstrip()
+                localProfileUUID = localProfileUUID.decode("utf-8", errors="ignore").replace('GeneratedUID: ', '').rstrip().lstrip()
                 isValidLocalMCX = True
             except:
                 isValidLocalMCX = False
@@ -128,8 +128,11 @@ def get_profiles_data(cachedir):
                                         stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 (output, unused_error) = proc.communicate()
-                output = output.replace('MCXSettings:', '').rstrip().lstrip()
-                localProfilePlist = plistlib.readPlistFromString(output)
+                output = output.decode("utf-8", errors="ignore").replace('MCXSettings:', '').rstrip().lstrip().encode()
+                try:
+                    localProfilePlist = plistlib.readPlistFromString(output)
+                except AttributeError as e:
+                    localProfilePlist = plistlib.loads(output)
                 isValidLocalMCX = True
             except:
                 isValidLocalMCX = False
@@ -141,7 +144,7 @@ def get_profiles_data(cachedir):
                 profile['profile_uuid'] = localProfileUUID
                 profile['profile_method'] = "Emulated"
                 profile['user'] = "System Level"
-                profile['profile_removal_allowed'] = "true"           
+                profile['profile_removal_allowed'] = "true"
                 for item in localProfilePlist:
                     # Reset keys for next payload
                     profile['payload_data'] = 'No Payload Data' # Set default payload_data value
@@ -213,7 +216,7 @@ def main():
     except:
         with open(output_plist, 'wb') as fp:
             plistlib.dump(info, fp, fmt=plistlib.FMT_XML)
-#    print plistlib.writePlistToString(info)
+    # print(info)
 
 if __name__ == "__main__":
     main()
