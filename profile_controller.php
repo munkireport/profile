@@ -25,7 +25,7 @@ class Profile_controller extends Module_controller
         echo "You've loaded the profile module!";
     }
 
-	/**
+    /**
      * Retrieve data in JSON for widget
      *
      **/
@@ -47,9 +47,9 @@ class Profile_controller extends Module_controller
         }
 
         jsonView($out);
-    } 
+    }
 
-   	/**
+    /**
      * Retrieve data for payload data popovers
      *
      **/
@@ -81,10 +81,10 @@ class Profile_controller extends Module_controller
         $json_string = str_replace(array('\\"', '"{', '}"','\''), '', $json_string);
         $json_string = str_replace('{}', 'No Payload Data', $json_string);
         $json_string = str_replace('null', 'No Payload Data', $json_string);
-        echo '<div style="white-space: pre-wrap">'. $json_string.'</div>';        
+        echo '<div style="white-space: pre-wrap">'. $json_string.'</div>';
     }
 
-	/**
+    /**
      * Retrieve data in json format for client tab
      *
      **/

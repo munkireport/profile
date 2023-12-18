@@ -33,15 +33,15 @@ class ProfileMoreColumns extends Migration
             $table->index('profile_verification_state');
             $table->index('user');
             $table->index('profile_method');
-            
+
         });
      }
-    
+
     public function down()
     {
         $capsule = new Capsule();
         $capsule::schema()->table($this->tableName, function (Blueprint $table) {
-            
+
             // Remove nullable
             $table->string('profile_uuid')->change();
             $table->string('profile_name')->change();
@@ -49,7 +49,7 @@ class ProfileMoreColumns extends Migration
             $table->string('payload_name')->change();
             $table->string('payload_display')->change();
             $table->text('payload_data')->change();
-            
+
             // Remove new columns
             $table->dropColumn('profile_install_date');
             $table->dropColumn('profile_organization');

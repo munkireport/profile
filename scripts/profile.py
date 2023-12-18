@@ -89,10 +89,14 @@ def get_profiles_data(cachedir):
                         elif payload_item == 'PayloadDisplayName':
                             profile['payload_display'] = payload[payload_item]
                         elif payload_item == 'PayloadContent':
-                            try:
-                                profile['payload_data'] = json.dumps(payload[payload_item],indent=2,default=str)
-                            except:
-                                profile['payload_data'] = 'Error Saving Payload Data'
+                            # Check if we are configured to save the payload data
+                            if CFPreferencesCopyAppValue('profile_upload_payload', 'MunkiReport') == False:
+                                profile['payload_data'] = 'No Payload Data'
+                            else:
+                                try:
+                                    profile['payload_data'] = json.dumps(payload[payload_item],indent=2,default=str)
+                                except:
+                                    profile['payload_data'] = 'Error Saving Payload Data'
 
                     # Add profile to profile_data
                     profile_data.append(profile.copy())
@@ -153,12 +157,18 @@ def get_profiles_data(cachedir):
                     # Process profile payload items
                     for key in localProfilePlist[item]:
                         profile['payload_name'] = key
-                        try:
-                            profile['payload_data'] = json.dumps(localProfilePlist[item][key],indent=2,default=str)
-                        except:
-                            profile['payload_data'] = 'Error Saving Payload Data'
-                      # Add profile to profile_data
-                        profile_data.append(profile.copy())
+
+                        # Check if we are configured to save the payload data
+                        if CFPreferencesCopyAppValue('profile_upload_payload', 'MunkiReport') == False:
+                            profile['payload_data'] = 'No Payload Data'
+                        else:
+                            try:
+                                profile['payload_data'] = json.dumps(localProfilePlist[item][key],indent=2,default=str)
+                            except:
+                                profile['payload_data'] = 'Error Saving Payload Data'
+                
+                    # Add profile to profile_data
+                    profile_data.append(profile.copy())
 
     return profile_data
 

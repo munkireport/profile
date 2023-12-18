@@ -1,51 +1,46 @@
 <?php $this->view('partials/head'); ?>
 
 <div class="container">
-  <div class="row">
-	<div class="col-lg-12">
-
-	  <h3><span data-i18n="profile.report"></span> <span id="total-count" class='label label-primary'>…</span></h3>
-
-	  <table class="table table-striped table-condensed table-bordered">
-		<thead>
-		  <tr>
-			<th data-i18n="listing.computername" data-colname='machine.computer_name'></th>
-			<th data-i18n="serial" data-colname='reportdata.serial_number'></th>
-            <th data-i18n="profile.profilename" data-colname='profile.profile_name'></th>
-            <th data-i18n="profile.uuid" data-colname='profile.profile_uuid'></th>
-            <th data-i18n="profile.scope" data-colname='profile.user'></th>
-            <th data-i18n="profile.method" data-colname='profile.profile_method'></th>
-            <th data-i18n="profile.payload_type" data-colname='profile.payload_name'></th>
-            <th data-i18n="profile.payloadname" data-colname='profile.payload_display'></th>
-            <th data-i18n="profile.payload_data" data-colname='profile.timestamp'></th>
-            <th data-i18n="profile.profile_install_date" data-colname='profile.profile_install_date'></th>
-            <th data-i18n="profile.profile_organization" data-colname='profile.profile_organization'></th>
-            <th data-i18n="profile.profile_verification_state" data-colname='profile.profile_verification_state'></th>
-            <th data-i18n="profile.profile_description" data-colname='profile.profile_description'></th>
-		  </tr>
-		</thead>
-
-		<tbody>
-		  <tr>
-			<td data-i18n="listing.loading" colspan="13" class="dataTables_empty"></td>
-		  </tr>
-		</tbody>
-	  </table>
-	</div> <!-- /span 12 -->
-  </div> <!-- /row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h3><span data-i18n="profile.report"></span> <span id="total-count" class='label label-primary'>…</span></h3>
+            <table class="table table-striped table-condensed table-bordered">
+                <thead>
+                    <tr>
+                        <th data-i18n="listing.computername" data-colname='machine.computer_name'></th>
+                        <th data-i18n="serial" data-colname='reportdata.serial_number'></th>
+                        <th data-i18n="profile.profilename" data-colname='profile.profile_name'></th>
+                        <th data-i18n="profile.uuid" data-colname='profile.profile_uuid'></th>
+                        <th data-i18n="profile.scope" data-colname='profile.user'></th>
+                        <th data-i18n="profile.method" data-colname='profile.profile_method'></th>
+                        <th data-i18n="profile.payload_type" data-colname='profile.payload_name'></th>
+                        <th data-i18n="profile.payloadname" data-colname='profile.payload_display'></th>
+                        <th data-i18n="profile.payload_data" data-colname='profile.timestamp'></th>
+                        <th data-i18n="profile.profile_install_date" data-colname='profile.profile_install_date'></th>
+                        <th data-i18n="profile.profile_organization" data-colname='profile.profile_organization'></th>
+                        <th data-i18n="profile.profile_verification_state" data-colname='profile.profile_verification_state'></th>
+                        <th data-i18n="profile.profile_description" data-colname='profile.profile_description'></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-i18n="listing.loading" colspan="13" class="dataTables_empty"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> <!-- /span 12 -->
+    </div> <!-- /row -->
 </div>  <!-- /container -->
 
 <script type="text/javascript">
 
-	$(document).on('appUpdate', function(e){
+    $(document).on('appUpdate', function(e){
+        var oTable = $('.table').DataTable();
+        oTable.ajax.reload();
+        return;
+    });
 
-		var oTable = $('.table').DataTable();
-		oTable.ajax.reload();
-		return;
-
-	});
-
-	$(document).on('appReady', function(e, lang) {
+    $(document).on('appReady', function(e, lang) {
 
         // Get modifiers from data attribute
         var mySort = [], // Initial sort
@@ -69,7 +64,7 @@
             col++
         });
 
-	    oTable = $('.table').dataTable( {
+        oTable = $('.table').dataTable( {
             ajax: {
                 url: appUrl + '/datatables/data',
                 type: "POST",
@@ -91,13 +86,13 @@
             buttons: mr.dt.buttons,
             order: mySort,
             columnDefs: columnDefs,
-		    createdRow: function( nRow, aData, iDataIndex ) {
-	        	// Update name in first column to link
-	        	var name=$('td:eq(0)', nRow).html();
-	        	if(name == ''){name = "No Name"};
-	        	var sn=$('td:eq(1)', nRow).html();
-	        	var link = mr.getClientDetailLink(name, sn, '#tab_profile-tab');
-	        	$('td:eq(0)', nRow).html(link);
+            createdRow: function( nRow, aData, iDataIndex ) {
+                // Update name in first column to link
+                var name=$('td:eq(0)', nRow).html();
+                if(name == ''){name = "No Name"};
+                var sn=$('td:eq(1)', nRow).html();
+                var link = mr.getClientDetailLink(name, sn, '#tab_profile-tab');
+                $('td:eq(0)', nRow).html(link);
 
                 // payload_display
                 var payload_display=$('td:eq(6)', nRow).text();
@@ -108,7 +103,7 @@
                 var profile_name=$('td:eq(2)', nRow).text();
                 var profile_uuid=$('td:eq(3)', nRow).text();
                 var payload_type=$('td:eq(6)', nRow).text();
-	        	$('td:eq(8)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
+                $('td:eq(8)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
 
 //                // profile_removal_allowed
 //                var removal_allowed=$('td:eq(9)', nRow).text();
@@ -136,9 +131,9 @@
                 verification_state = verification_state == 'not verified' ? i18n.t('profile.not_verified') :
                 (verification_state = verification_state == 'unsigned' ? i18n.t('profile.not_verified') : verification_state)
                 $('td:eq(11)', nRow).text(verification_state)
-		    }
-	    });
-	});
+            }
+        });
+    });
 
     // Get payload data via API and display in modal
     function view_payload_data(serial_number, profile_uuid, payload_type, profile_name){

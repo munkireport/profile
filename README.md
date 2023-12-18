@@ -5,6 +5,13 @@ Reports on macOS mobile configuration profile information
 
 Collects information about installed profiles by querying the `/usr/bin/profiles` command
 
+### Profile Payload Data
+By default the `profile` module uploads the profile's payload data as a JSON file to the MunkiReport server. In some cases this can result is very large file uploads or a very large `profile` database table. 
+
+To prevent the module from uploading the profile's payload, set the `profile_upload_payload` of the `MunkiReport` domain to `FALSE` using either a profile or the below command.
+
+`defaults write /Library/Preferences/MunkiReport.plist profile_upload_payload -bool False`
+
 Table Schema
 -----
 

@@ -14,7 +14,7 @@ class ProfileUpdateProfileData extends Migration
             $table->longText('payload_data')->nullable()->change();
         });
     }
-    
+
     public function down()
     {
         $capsule = new Capsule();
