@@ -30,3 +30,4 @@ Table Schema
 * user - varchar(255) - User that the profile belongs to
 * profile_description - mediumtext - Profile's description
 * profile_method - varchar(255) - If profile is emulated MCX or native mobile configuration profile
+* profile_id - varchar(255) - Profile identifier

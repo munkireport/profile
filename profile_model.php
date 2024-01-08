@@ -6,12 +6,12 @@ class Profile_model extends \Model
 {
     public function __construct($serial = '')
     {
-        parent::__construct('id', 'profile'); //primary key, tablename
+        parent::__construct('id', 'profile'); // Primary key, tablename
         $this->rs['id'] = '';
         $this->rs['serial_number'] = $serial;
         $this->rs['profile_uuid'] = '';
         $this->rs['profile_name'] = '';
-        $this->rs['profile_removal_allowed'] = ''; //Yes or No (not a boolean)
+        $this->rs['profile_removal_allowed'] = ''; // Yes or No (not a boolean)
         $this->rs['payload_name'] = '';
         $this->rs['payload_display'] = '';
         $this->rs['payload_data'] = '';
@@ -22,6 +22,7 @@ class Profile_model extends \Model
         $this->rs['user'] = '';
         $this->rs['profile_description'] = '';
         $this->rs['profile_method'] = '';
+        $this->rs['profile_id'] = '';
 
         if ($serial) {
             $this->retrieve_record($serial);

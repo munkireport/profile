@@ -44,6 +44,7 @@ def get_profiles_data(cachedir):
             profile['profile_removal_allowed'] = ''
             profile['profile_install_date'] = ''
             profile['profile_method'] = "Native"
+            profile['profile_id'] = ''
 
             # Process each user's profile data
             for item in inner_user:
@@ -66,8 +67,10 @@ def get_profiles_data(cachedir):
                     profile['profile_verification_state'] = inner_user[item]
                 elif item == 'ProfileUninstallPolicy' or item == 'ProfileRemovalDisallowed':
                     profile['profile_removal_allowed'] = inner_user[item]
+                elif item == 'ProfileIdentifier' or item == 'ProfileRemovalDisallowed':
+                    profile['profile_id'] = inner_user[item]
                 elif item == 'ProfileInstallDate':
-                    installed = str(inner_user[item])                    
+                    installed = str(inner_user[item])
                     date_str, tz = installed[:-5], installed[-5:]
                     dt_utc = datetime.strptime(date_str.strip(), "%Y-%m-%d %H:%M:%S")
                     dt = dt_utc.replace(tzinfo=FixedOffset(tz))
@@ -149,6 +152,7 @@ def get_profiles_data(cachedir):
                 profile['profile_method'] = "Emulated"
                 profile['user'] = "System Level"
                 profile['profile_removal_allowed'] = "true"
+                profile['profile_id'] = ''
                 for item in localProfilePlist:
                     # Reset keys for next payload
                     profile['payload_data'] = 'No Payload Data' # Set default payload_data value
@@ -166,7 +170,7 @@ def get_profiles_data(cachedir):
                                 profile['payload_data'] = json.dumps(localProfilePlist[item][key],indent=2,default=str)
                             except:
                                 profile['payload_data'] = 'Error Saving Payload Data'
-                
+
                         # Add profile to profile_data
                         profile_data.append(profile.copy())
 

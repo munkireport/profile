@@ -10,6 +10,7 @@
                         <th data-i18n="listing.computername" data-colname='machine.computer_name'></th>
                         <th data-i18n="serial" data-colname='reportdata.serial_number'></th>
                         <th data-i18n="profile.profilename" data-colname='profile.profile_name'></th>
+                        <th data-i18n="profile.profile_id" data-colname='profile.profile_id'></th>
                         <th data-i18n="profile.uuid" data-colname='profile.profile_uuid'></th>
                         <th data-i18n="profile.scope" data-colname='profile.user'></th>
                         <th data-i18n="profile.method" data-colname='profile.profile_method'></th>
@@ -24,7 +25,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-i18n="listing.loading" colspan="13" class="dataTables_empty"></td>
+                        <td data-i18n="listing.loading" colspan="14" class="dataTables_empty"></td>
                     </tr>
                 </tbody>
             </table>
@@ -95,15 +96,15 @@
                 $('td:eq(0)', nRow).html(link);
 
                 // payload_display
-                var payload_display=$('td:eq(6)', nRow).text();
+                var payload_display=$('td:eq(7)', nRow).text();
                 (payload_display = payload_display == 'No Payload Display Name' ? i18n.t('') : payload_display)
-                $('td:eq(6)', nRow).text(payload_display)
+                $('td:eq(7)', nRow).text(payload_display)
 
                 // View payload data button
                 var profile_name=$('td:eq(2)', nRow).text();
-                var profile_uuid=$('td:eq(3)', nRow).text();
-                var payload_type=$('td:eq(6)', nRow).text();
-                $('td:eq(8)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
+                var profile_uuid=$('td:eq(4)', nRow).text();
+                var payload_type=$('td:eq(7)', nRow).text();
+                $('td:eq(9)', nRow).html('<button onclick="view_payload_data(\''+sn+'\',\''+profile_uuid+'\',\''+payload_type+'\',\''+profile_name+'\')" class="btn btn-info btn-xs" style="min-width: 100px;" >'+i18n.t('profile.view')+'</button>')
 
 //                // profile_removal_allowed
 //                var removal_allowed=$('td:eq(9)', nRow).text();
@@ -118,19 +119,19 @@
 //                $('td:eq(9)', nRow).text(removal_allowed)
 
                 // Format profile_install_date
-                var event = parseInt($('td:eq(9)', nRow).text());
+                var event = parseInt($('td:eq(10)', nRow).text());
                 if (event){
                     var date = new Date(event * 1000);
-                    $('td:eq(9)', nRow).html('<span title="' + moment(date).fromNow() + '">'+moment(date).format('llll')+'</span>');
+                    $('td:eq(10)', nRow).html('<span title="' + moment(date).fromNow() + '">'+moment(date).format('llll')+'</span>');
                 }
 
                 // profile_verification_state
-                var verification_state=$('td:eq(11)', nRow).text();
+                var verification_state=$('td:eq(12)', nRow).text();
                 verification_state = verification_state == 'verified' ? i18n.t('profile.verified') :
                 verification_state = verification_state == 'signed' ? i18n.t('profile.verified') :
                 verification_state = verification_state == 'not verified' ? i18n.t('profile.not_verified') :
                 (verification_state = verification_state == 'unsigned' ? i18n.t('profile.not_verified') : verification_state)
-                $('td:eq(11)', nRow).text(verification_state)
+                $('td:eq(12)', nRow).text(verification_state)
             }
         });
     });
