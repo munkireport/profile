@@ -95,7 +95,9 @@ class Profile_controller extends Module_controller
 
         $sql = "SELECT profile_name, profile_uuid, user, profile_method, payload_name, profile_id, payload_display, serial_number, profile_removal_allowed, profile_install_date, profile_organization, profile_verification_state, profile_description
                         FROM profile 
-                        WHERE serial_number = '$serial_number';";
+                        LEFT JOIN reportdata USING (serial_number)
+                        ".get_machine_group_filter()."
+                        AND serial_number = '$serial_number';";
 
         $queryobj = new Profile_model;
         jsonView($queryobj->query($sql));
