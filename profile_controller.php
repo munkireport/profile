@@ -56,9 +56,9 @@ class Profile_controller extends Module_controller
     public function get_payload_data($serial_number, $profile_uuid, $payload_name)
     {
         // Remove non-alphanumeric characters
-        $serial_number = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $serial_number);
-        $profile_uuid = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $profile_uuid);
-        $payload_name = preg_replace("/[^A-Za-z0-9_\-.]]/", '', $payload_name);
+        $serial_number = preg_replace("/[^A-Za-z0-9_\-.]/", '', $serial_number);
+        $profile_uuid = preg_replace("/[^A-Za-z0-9_\-.]/", '', $profile_uuid);
+        $payload_name = preg_replace("/[^A-Za-z0-9_\-.]/", '', $payload_name);
 
         $sql = "SELECT payload_data
                         FROM profile 
@@ -91,7 +91,7 @@ class Profile_controller extends Module_controller
     public function get_data($serial_number = '')
     {
         // Remove non-serial number characters
-        $serial_number = preg_replace("/[^A-Za-z0-9_\-]]/", '', $serial_number);
+        $serial_number = preg_replace("/[^A-Za-z0-9_\-]/", '', $serial_number);
 
         $sql = "SELECT profile_name, profile_uuid, user, profile_method, payload_name, profile_id, payload_display, serial_number, profile_removal_allowed, profile_install_date, profile_organization, profile_verification_state, profile_description
                         FROM profile 
