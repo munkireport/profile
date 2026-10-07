@@ -67,7 +67,7 @@ def get_profiles_data(cachedir):
                     profile['profile_verification_state'] = inner_user[item]
                 elif item == 'ProfileUninstallPolicy' or item == 'ProfileRemovalDisallowed':
                     profile['profile_removal_allowed'] = inner_user[item]
-                elif item == 'ProfileIdentifier' or item == 'ProfileRemovalDisallowed':
+                elif item == 'ProfileIdentifier':
                     profile['profile_id'] = inner_user[item]
                 elif item == 'ProfileInstallDate':
                     installed = str(inner_user[item])
